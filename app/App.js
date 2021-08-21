@@ -17,6 +17,7 @@ import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Navigaion from "./navigation";
 import { Platform } from "react-native";
+import SplashScreen from 'react-native-splash-screen'
 
 LogBox.ignoreAllLogs(true)
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
     Utils.setI18nConfig();
   }
   async componentDidMount() {
+    SplashScreen.hide();
     if (Platform.OS == 'android')
       StatusBar.setBackgroundColor(EStyleSheet.value('$primaryColor'), true);
   }
