@@ -21,36 +21,23 @@ class SignUp extends Component {
 		super(props);
 		this.initState = {
 			loading: false,
-			fname: BaseConfig.DEVELOP_MEDE ? "test" : '',
-			lname: '',
-			email: BaseConfig.DEVELOP_MEDE ? "olaguivelgabriel20@gmail.com" : '',
-			password: BaseConfig.DEVELOP_MEDE ? "Test12345" : '',
-			cpassword: BaseConfig.DEVELOP_MEDE ? "Test12345" : '',
-			success: {
-				fname: true,
-				lname: true,
-				email: true,
-				phone: true,
-				password: true,
-				cpassword: true
-			},
-			phone: BaseConfig.DEVELOP_MEDE ? "89777567619" : '',
-			formattedPhone: "",
-			callingCode: "91",
-			validPhone: false,
-			countryCode: "IN",
+			fname: 'fname',
+			lname: 'lname',
+			email: 'olaguivelgabriel20@gmail.com',
+			password: 'Test@123',
+			cpassword: 'Test@123',
 			showPass: true,
 			showConfirmPass: true,
-			showOtp: false,
 			isEmail: true,
 			loginType: 0,
 			error_list: {},
-			is_terms: false
+			is_terms: false,
+			error_message: ""
 		};
 		this.state = this.initState;
 	}
 	componentDidMount() {
-		
+
 	}
 
 	componentWillUnmount() {
@@ -62,22 +49,20 @@ class SignUp extends Component {
 	}
 
 	onSingUp() {
-		this.props.navigation.navigate('ActiveAccount');
-		return;
 		const { navigation } = this.props;
-		const { loading, fname, lname, email, password, cpassword, error_list, phone, formattedPhone, callingCode } = this.state;
+		const { loading, fname, lname, email, password, cpassword, is_terms } = this.state;
 		let error = false;
 		let errorList = {};
 		if (fname == "") {
 			errorList = { ...errorList, fname: true };
 			error = true;
 		}
-		if (email == "") {
-			errorList = { ...errorList, email: true };
+		if (lname == "") {
+			errorList = { ...errorList, lname: true };
 			error = true;
 		}
-		if (phone == "") {
-			errorList = { ...errorList, phone: true };
+		if (email == "") {
+			errorList = { ...errorList, email: true };
 			error = true;
 		}
 		if (password == "") {
@@ -88,32 +73,34 @@ class SignUp extends Component {
 			errorList = { ...errorList, cpassword: true };
 			error = true;
 		}
+		if (is_terms == false) {
+			errorList = { ...errorList, is_terms: true };
+			error = true;
+		}
 		if (error) {
 			this.setState({ error_list: errorList });
-			Toast.show("Please enter details correctly.", Toast.LONG);
 			return;
 		}
+		this.setState({ error_list: {} })
 		if (!Utils.EMAIL_VALIDATE.test((email).toLowerCase())) {
-			Toast.show("Please enter valid email address", Toast.LONG);
-			return;
-		}
-		if (phone.toString().length < 10 || phone.toString().length > 11) {
-			Toast.show("Please enter valid phone number", Toast.LONG);
+			this.setState({ error_message: "Please enter valid email address" })
 			return;
 		}
 		if (!password.match(Utils?.PASSPORT_VALIDATE)) {
-			Toast.show('Passwords must contain combination of special characters and numbers including lowercase and uppercase.', Toast.LONG);
+			this.setState({ error_message: 'Passwords must contain combination of special characters and numbers including lowercase and uppercase.' })
 			return;
 		}
 		if (cpassword != password) {
-			Toast.show("Confirm Password must be same as Password", Toast.LONG);
+			this.setState({ error_message: "Confirm Password must be same as Password" })
 			return;
 		}
+		this.setState({ error_message: "" })
 		let model = {
-			Email_Id: email,
-			Mobile_Number: '+' + callingCode + ' ' + phone,
-			Password: password,
-			User_Type: "USER",
+			email: email,
+			password: password,
+			verify: false,
+			fname: fname,
+			lname: lname
 		}
 		this.setState(
 			{
@@ -125,13 +112,13 @@ class SignUp extends Component {
 						console.log(response)
 						if (response?.Response_Status == "Success") {
 							this.setState({ ...this.initState });
-							// return this.navigation.goBack();
-							this.setState({ showOtp: true })
+							this.props.navigation.navigate("ActiveAccount", { type: 0 })
 						} else {
 							Toast.show(response?.UI_Display_Message, Toast.LONG);
 						}
 					})
 					.catch(err => {
+						console.log(err)
 						Toast.show("Network connection issue.");
 					})
 					.finally(
@@ -142,7 +129,7 @@ class SignUp extends Component {
 	}
 
 	render() {
-		const { loading, fname, lname, email, password, cpassword, countryCode, phone, callingCode, error_list, showOtp, is_terms } = this.state;
+		const { loading, fname, lname, email, password, cpassword, error_list, error_message, is_terms } = this.state;
 		return (
 			<SafeAreaView
 				style={[BaseStyle.safeAreaView]}
@@ -164,21 +151,19 @@ class SignUp extends Component {
 									this.setState({ fname })
 								}}
 								placeholder={'First name'}
-								errorText={""}
 								status={fname ? "update" : "new"}
-								isError={error_list?.fname}
+								errorText={error_list?.fname}
 								icon="first"
 							/>
 							<CustomAnimatedInput
 								style={{ flex: 1, backgroundColor: 'transparent' }}
-								value={fname}
-								onChangeText={fname => {
-									this.setState({ fname })
+								value={lname}
+								onChangeText={lname => {
+									this.setState({ lname })
 								}}
 								placeholder={'Last name'}
-								errorText={""}
-								status={fname ? "update" : "new"}
-								isError={error_list?.fname}
+								status={lname ? "update" : "new"}
+								errorText={error_list?.lname}
 								icon="last"
 							/>
 							<CustomAnimatedInput
@@ -190,8 +175,7 @@ class SignUp extends Component {
 								placeholder={'Email Address'}
 								type="email"
 								status={email ? "update" : "new"}
-								errorText={""}
-								isError={error_list?.email}
+								errorText={error_list?.email}
 								icon="email"
 							/>
 							<CustomAnimatedInput
@@ -203,8 +187,7 @@ class SignUp extends Component {
 								placeholder={'Password'}
 								status={password ? "update" : "new"}
 								type="password"
-								errorText={""}
-								isError={error_list?.password}
+								errorText={error_list?.password}
 								icon="password"
 							/>
 							<CustomAnimatedInput
@@ -216,8 +199,7 @@ class SignUp extends Component {
 								placeholder={'Confirm Password'}
 								status={cpassword ? "update" : "new"}
 								type="password"
-								errorText={""}
-								isError={error_list?.cpassword}
+								errorText={error_list?.cpassword}
 								icon="password"
 							/>
 						</View>
@@ -232,7 +214,28 @@ class SignUp extends Component {
 								<Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>I agree to the</Text>
 								<Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Saitama Inu Terms of Use and Privacy Policy</Text>
 							</View>
+
 						</View>
+						{error_list?.is_terms &&
+							<View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', flex: 1, flexDirection: 'row', width: '100%', height: 20 }}>
+								<Text style={styles.errorText}>
+									{'This field require.'}
+								</Text>
+							</View>
+						}
+						{!!error_message &&
+							<View style={{
+								backgroundColor: EStyleSheet.value('$errorBkColor'),
+								opacity: 0.4,
+								borderWidth: 2,
+								borderColor: EStyleSheet.value('$errorBorderColor'),
+								borderRadius: 8,
+								marginTop: 15,
+								padding: 10
+							}}>
+								<Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor') }}>{error_message}</Text>
+							</View>
+						}
 						<View style={{ width: "100%", marginTop: 10 }}>
 							<Button
 								full

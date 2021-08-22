@@ -12,7 +12,9 @@ import Success from '@assets/images/success.png';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-const ActiveAccount = () => {
+const ActiveAccount = (props) => {
+    const { type } = props.route.params;
+    console.log(type);
     const [verify_code, setVerifyCode] = useState("");
     const [is_code, setIsCode] = useState(false);
     const checkAccount = () => {

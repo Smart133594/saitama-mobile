@@ -22,121 +22,72 @@ class SignIn extends Component {
 			loading: false,
 			email: BaseConfig.DEVELOP_MEDE ? "olaguivelgabriel20@gmail.com" : '',
 			password: BaseConfig.DEVELOP_MEDE ? "Test12345" : '',
-			success: {
-				email: true,
-				password: true
-			},
-			phone: BaseConfig.DEVELOP_MEDE ? "7416809023" : '',
-			userInfo: null,
-			showPass: true,
-			showOtp: false,
-			isEmail: true,
-			loginType: 0,
-			countryCode: "IN",
-			callingCode: "91",
-			error_list: {}
+			error_list: {},
+			error_message: ""
 		};
 	}
 	componentDidMount() {
-		
+
 	}
 
 	componentWillUnmount() {
 	}
 	onLogin() {
-		this.props.navigation.navigate('Welcome');
-		return;
-		let self = this;
-		let { email, password, success, isEmail, phone, callingCode } = this.state;
-		if (email == "" && isEmail && password == "") {
-			Toast.show("Email and Password details are required.", Toast.LONG);
-			this.setState({ error_list: { email: true, password: true, } })
-			return;
+		let { email, password } = this.state;
+		let error = false;
+		let errorList = {};
+		if (email == "") {
+			errorList = { ...errorList, email: true };
+			error = true;
 		}
-		if (email == "" && isEmail) {
-			// this.setState({ success: { ...success, email: false } });
-			Toast.show("Please enter email address", Toast.LONG);
-			this.setState({ error_list: { email: true } })
-			return;
-		} else if (!Utils.EMAIL_VALIDATE.test((email).toLowerCase()) && isEmail) {
-			Toast.show("Please enter valid email address", Toast.LONG);
-			return;
-		} else if (phone == "" && isEmail == false) {
-			// this.setState({ success: { ...success, email: false } });
-			Toast.show("Please enter phone number", Toast.LONG);
-			this.setState({ error_list: { phone: true } })
-			return;
-		} else if ((phone.toString().length < 10 || phone.toString().length > 11) && isEmail == false) {
-			Toast.show("Please enter valid phone number", Toast.LONG);
-			return;
-		} else if (password == "" && isEmail) {
-			// this.setState({ success: { ...success, password: false } });
-			Toast.show("Please enter password", Toast.LONG);
-			this.setState({ error_list: { password: true } })
-			return;
+		if (password == "") {
+			errorList = { ...errorList, password: true };
+			error = true;
 		}
-		if (isEmail == false) {
-			self.setState({ loginType: 1 })
-			let model = {
-				Mobile: '+' + callingCode + " " + phone,
-			}
-			this.setState({
-				loading: true
-			}, () => {
-				apiActions.mobile_otp(model)
-					.then(async response => {
-						console.log(response)
-						if (response?.Response_Code == '404') {
-							Toast.show(response.UI_Display_Message, Toast.LONG);
-						} else {
-							self.setState({ showOtp: true })
-							this.current.togglePanel();
-						}
-					})
-					.catch(err => {
-						Toast.show("Network connection issue.");
-					})
-					.finally(
-						() => this.setState({ loading: false })
-					)
-			})
+		if (error) {
+			this.setState({ error_list: errorList });
+			return;
 		} else {
-			self.setState({ loginType: 0 })
-			let model = {
-				Email_Id: email,
-				Password: password,
-				Email_OTP_Required: "1",
-				Is_OTP_Verification_Required: "1"
-			}
-			this.setState({
-				loading: true
-			}, () => {
-				apiActions.login(model)
-					.then(async response => {
-						console.log(response);
-						if (response.Response_Code == '200') {
-							self.setState({ showOtp: true })
-							this.current.togglePanel();
-						} else {
-							Toast.show('Please enter your username or password correctly.', Toast.LONG);
-						}
-					})
-					.catch(err => {
-						Toast.show("Network connection issue.");
-					})
-					.finally(
-						() => this.setState({ loading: false })
-					)
-			})
+			this.setState({ error_list: {} })
 		}
+		if (!Utils.EMAIL_VALIDATE.test((email).toLowerCase())) {
+			this.setState({ error_message: "Please enter valid email address." })
+			return;
+		} else {
+			this.setState({ error_message: "" })
+		}
+		let model = {
+			Email_Id: email,
+			Password: password,
+			Email_OTP_Required: "1",
+			Is_OTP_Verification_Required: "1"
+		}
+		this.setState({
+			loading: true
+		}, () => {
+			apiActions.login(model)
+				.then(async response => {
+					console.log(response);
+					if (response.Response_Code == '200') {
+					} else {
+						Toast.show('Please enter your username or password correctly.', Toast.LONG);
+					}
+				})
+				.catch(err => {
+					Toast.show("Network connection issue.");
+				})
+				.finally(
+					() => this.setState({ loading: false })
+				)
+		})
 	}
 
 	onSignUp() {
-		this.setState({ isEmail: true, email: "", password: "" });
+		this.setState({ email: "", password: "" });
 		return this.props.navigation.navigate("SignUp");
 	}
 	render() {
-		const { email, password, loading, showOtp, phone, isEmail, loginType, error_list } = this.state;
+		const { email, password, loading, error_list, error_message } = this.state;
 		return (
 			<SafeAreaView
 				style={[BaseStyle.safeAreaView]}
@@ -157,9 +108,8 @@ class SignIn extends Component {
 								onChangeText={email => this.setState({ email })}
 								placeholder={'Email'}
 								type="email"
-								errorText={""}
 								status={email ? "update" : "new"}
-								isError={error_list?.email}
+								errorText={error_list?.email}
 								icon="email"
 							/>
 							<CustomAnimatedInput
@@ -171,22 +121,23 @@ class SignIn extends Component {
 								placeholder={'Password'}
 								type="password"
 								status={password ? "update" : "new"}
-								errorText={""}
-								isError={error_list?.password}
+								errorText={error_list?.password}
 								icon="password"
 							/>
 						</View>
-						<View style={{
-							backgroundColor: EStyleSheet.value('$errorBkColor'),
-							opacity: 0.4,
-							borderWidth: 2,
-							borderColor: EStyleSheet.value('$errorBorderColor'),
-							borderRadius: 8,
-							marginTop: 15,
-							padding: 10
-						}}>
-							<Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor') }}>The user is not registered. Please try again</Text>
-						</View>
+						{!!error_message &&
+							<View style={{
+								backgroundColor: EStyleSheet.value('$errorBkColor'),
+								opacity: 0.4,
+								borderWidth: 2,
+								borderColor: EStyleSheet.value('$errorBorderColor'),
+								borderRadius: 8,
+								marginTop: 15,
+								padding: 10
+							}}>
+								<Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor') }}>{error_message}</Text>
+							</View>
+						}
 						<TouchableOpacity style={{ marginTop: 15 }} onPress={() => {
 							this.setState({ email: "", password: "" })
 							this.props.navigation.navigate('ForgotPassword')
