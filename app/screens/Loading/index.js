@@ -13,10 +13,10 @@ class Loading extends Component {
     componentDidMount() {
         setTimeout(() => {
             try {
-                if (this.props?.auth?.login?.success == false)
-                    return this.props.navigation.navigate("Auth");
-                else
+                if (this.props?.auth?.login?.success == true)
                     return this.props.navigation.navigate("Main");
+                else
+                    return this.props.navigation.navigate("Auth");
             } catch (err) {
             }
         }, 1000);
@@ -33,9 +33,9 @@ class Loading extends Component {
                 forceInset={{ top: "always" }}
             >
                 <View style={{ alignItems: "center", flexDirection: 'column', justifyContent: 'center', height: '100%', backgroundColor: 'white' }}>
-                    <Image source={Background} style={{position: 'absolute'}}/>
+                    <Image source={Background} style={{ position: 'absolute' }} />
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
-                        <Image source={Logo}/>
+                        <Image source={Logo} />
                     </View>
                 </View>
             </SafeAreaView>
