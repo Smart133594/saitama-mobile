@@ -1,12 +1,46 @@
-import React, { Component, useState } from "react";
-import { BackHandler, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Image, KeyboardAvoidingView } from "react-native";
-import { connect } from "react-redux";
-import styles from "./styles";
-import { BaseConfig, BaseStyle } from "@config";
+import { apiActions, actionTypes } from "@actions";
 import Logo from '@assets/images/logo.png';
 import ImgWelcome from '@assets/images/welcome.png';
+import { BaseStyle } from "@config";
+import React, { useEffect } from "react";
+import { Image, SafeAreaView, Text, View, BackHandler, Alert } from "react-native";
+import { connect } from "react-redux";
+import RNRestart from 'react-native-restart';
 
-const Welcome = () => {
+const Welcome = (props) => {
+    useEffect(() => {
+        const backAction = () => {
+            Alert.alert("Hold on!", "Are you sure you want logout?", [
+                {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: "cancel"
+                },
+                {
+                    text: "YES", onPress: () => {
+                        let data = {
+                            success: false,
+                            user: {}
+                        };
+                        props.dispatch({ type: actionTypes.LOGIN, data });
+                        setTimeout(() => {
+                            try {
+                                RNRestart.Restart();
+                            } catch (err) {
+                            }
+                        }, 500);
+                    }
+                }
+            ]);
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, [])
     return (
         <SafeAreaView
             style={[BaseStyle.safeAreaView]}

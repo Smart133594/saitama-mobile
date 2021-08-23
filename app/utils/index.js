@@ -11,10 +11,6 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 export const PASSPORT_VALIDATE = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{4,}$/;
 export const EMAIL_VALIDATE = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
 
-export const GOOGLE_GEO_API_KEY = 'AIzaSyCRqkSP2ccSVrYQmATHc5VDTxQU-YdusYg';
-export const GOOGLE_OAUTH_WEB_CLIENT_ID = '639984185156-li9qfe33p9m18ud3hpmdkr90bbsnak63.apps.googleusercontent.com';
-export const GOOGLE_MAP_API_URL = 'https://maps.googleapis.com/maps/api/';
-
 export const isObjEmpty = (obj) => {
   if (obj == null) return true;
   if (obj === null) return true;

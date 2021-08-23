@@ -1,4 +1,4 @@
-import { apiActions } from "@actions";
+import { apiActions, actionTypes } from "@actions";
 import { Button } from "@components";
 import CustomAnimatedInput from "@components/CustomAnimatedInput";
 import { BaseConfig, BaseStyle } from "@config";
@@ -14,17 +14,21 @@ import styles from "./styles";
 import IcMail from '@assets/images/mail.png';
 import IcLock from '@assets/images/lock.png';
 import Logo from '@assets/images/logo.png';
-
+import {
+	BallIndicator
+} from 'react-native-indicators';
 class SignIn extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
+		this.initState = {
 			loading: false,
 			email: BaseConfig.DEVELOP_MEDE ? "olaguivelgabriel20@gmail.com" : '',
-			password: BaseConfig.DEVELOP_MEDE ? "Test12345" : '',
+			password: BaseConfig.DEVELOP_MEDE ? "Test@12345" : '',
 			error_list: {},
-			error_message: ""
+			error_message: "",
+			success_message: ""
 		};
+		this.state = this.initState;
 	}
 	componentDidMount() {
 
@@ -57,42 +61,67 @@ class SignIn extends Component {
 			this.setState({ error_message: "" })
 		}
 		let model = {
-			Email_Id: email,
-			Password: password,
-			Email_OTP_Required: "1",
-			Is_OTP_Verification_Required: "1"
+			email: email,
+			password: password,
 		}
 		this.setState({
 			loading: true
 		}, () => {
 			apiActions.login(model)
 				.then(async response => {
-					console.log(response);
 					if (response.Response_Code == '200') {
+						this.setState({ success_message: response?.UI_Display_Message })
+						let data = {
+							success: false,
+							user: response.User
+						};
+						this.props.dispatch({ type: actionTypes.LOGIN, data });
+						setTimeout(() => {
+							try {
+								this.setState({ ...this.initState });
+								return this.props.navigation.navigate("ActiveAccount", { type: 1 });
+							} catch (err) {
+							}
+						}, 1000);
 					} else {
-						Toast.show('Please enter your username or password correctly.', Toast.LONG);
+						setTimeout(() => {
+							try {
+								this.setState({ error_message: response?.UI_Display_Message })
+								this.setState({ loading: false })
+							} catch (err) {
+							}
+						}, 1000);
 					}
 				})
 				.catch(err => {
+					this.setState({ loading: false })
 					Toast.show("Network connection issue.");
 				})
-				.finally(
-					() => this.setState({ loading: false })
-				)
 		})
 	}
 
 	onSignUp() {
-		this.setState({ email: "", password: "" });
+		this.setState({ ...this.initState })
 		return this.props.navigation.navigate("SignUp");
 	}
 	render() {
-		const { email, password, loading, error_list, error_message } = this.state;
+		const { email, password, loading, error_list, error_message, success_message } = this.state;
 		return (
 			<SafeAreaView
 				style={[BaseStyle.safeAreaView]}
 				forceInset={{ top: "always" }}
 			>
+				{loading &&
+					<View style={{ position: 'absolute', backgroundColor: 'white', opacity: 0.9, height: Utils.SCREEN.HEIGHT, width: Utils.SCREEN.WIDTH, zIndex: 1 }}>
+						<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+							<View style={{ height: 80 }}>
+								<BallIndicator color={EStyleSheet.value('$btnColor')} size={50} />
+							</View>
+							<Text style={{ color: 'black', fontFamily: 'Nunito-Light', fontSize: 16 }}>Sending data.</Text>
+							<Text style={{ color: 'black', fontFamily: 'Nunito-Light', fontSize: 16 }}>Login account.</Text>
+						</View>
+					</View>
+				}
 				<ScrollView >
 					<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
 						<Image source={Logo} />
@@ -135,7 +164,20 @@ class SignIn extends Component {
 								marginTop: 15,
 								padding: 10
 							}}>
-								<Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor') }}>{error_message}</Text>
+								<Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center' }}>{error_message}</Text>
+							</View>
+						}
+						{!!success_message &&
+							<View style={{
+								backgroundColor: EStyleSheet.value('$successBkColor'),
+								opacity: 0.4,
+								borderWidth: 2,
+								borderColor: EStyleSheet.value('$successBorderColor'),
+								borderRadius: 8,
+								marginTop: 15,
+								padding: 10
+							}}>
+								<Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$successColor'), textAlign: 'center' }}>{success_message}</Text>
 							</View>
 						}
 						<TouchableOpacity style={{ marginTop: 15 }} onPress={() => {
@@ -147,7 +189,6 @@ class SignIn extends Component {
 						<View style={{ width: "100%", marginTop: 15 }}>
 							<Button
 								full
-								loading={loading}
 								onPress={() => {
 									if (!loading)
 										this.onLogin();

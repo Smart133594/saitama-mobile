@@ -14,7 +14,10 @@ class Loading extends Component {
     componentDidMount() {
         setTimeout(() => {
             try {
-                return this.props.navigation.navigate("Auth");
+                if (this.props?.auth?.login?.success == false)
+                    return this.props.navigation.navigate("Auth");
+                else
+                    return this.props.navigation.navigate("Main");
             } catch (err) {
             }
         }, 1000);

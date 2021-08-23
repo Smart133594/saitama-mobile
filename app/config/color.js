@@ -25,6 +25,9 @@ let BaseColor = {
   '$btnColor': '#E1BA25',
   '$fontColor': '#ffffff',
   '$errorBkColor': '#E34640',
+  '$successBkColor': '#6CB243',
+  '$successBorderColor': '#61D118',
+  '$successColor': '#61D118',
   '$errorBorderColor': '#DB2626',
   '$disableColor': '#B0AFB5',
 };

@@ -14,11 +14,6 @@ export default (state = initialState, action = {}) => {
         ...state,
         splash: action.data
       };
-    case actionTypes.LOCATION:
-      return {
-        ...state,
-        location: action.data
-      };
     default:
       return state;
   }

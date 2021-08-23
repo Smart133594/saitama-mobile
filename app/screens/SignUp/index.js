@@ -1,4 +1,4 @@
-import { apiActions } from "@actions";
+import { apiActions, actionTypes } from "@actions";
 import { Button } from "@components";
 import CustomAnimatedInput from "@components/CustomAnimatedInput";
 import { BaseConfig, BaseStyle } from "@config";
@@ -14,7 +14,9 @@ import { connect } from "react-redux";
 import styles from "./styles";
 import Logo from '@assets/images/logo.png';
 import CheckBox from '@react-native-community/checkbox';
-
+import {
+	BallIndicator
+} from 'react-native-indicators';
 
 class SignUp extends Component {
 	constructor(props) {
@@ -49,8 +51,7 @@ class SignUp extends Component {
 	}
 
 	onSingUp() {
-		const { navigation } = this.props;
-		const { loading, fname, lname, email, password, cpassword, is_terms } = this.state;
+		const { fname, lname, email, password, cpassword, is_terms } = this.state;
 		let error = false;
 		let errorList = {};
 		if (fname == "") {
@@ -111,19 +112,34 @@ class SignUp extends Component {
 					.then(async response => {
 						console.log(response)
 						if (response?.Response_Status == "Success") {
-							this.setState({ ...this.initState });
-							this.props.navigation.navigate("ActiveAccount", { type: 0 })
+							let data = {
+								success: false,
+								user: response.User
+							};
+							this.props.dispatch({ type: actionTypes.LOGIN, data });
+							setTimeout(() => {
+								try {
+									this.setState({ loading: false })
+									this.setState({ ...this.initState });
+									return this.props.navigation.navigate("ActiveAccount", { type: 0 });
+								} catch (err) {
+								}
+							}, 1000);
 						} else {
-							Toast.show(response?.UI_Display_Message, Toast.LONG);
+							setTimeout(() => {
+								try {
+									this.setState({error_message: response?.UI_Display_Message})
+									this.setState({ loading: false })
+								} catch (err) {
+								}
+							}, 1000);
 						}
 					})
 					.catch(err => {
 						console.log(err)
+						this.setState({ loading: false })
 						Toast.show("Network connection issue.");
 					})
-					.finally(
-						() => this.setState({ loading: false })
-					)
 			}
 		);
 	}
@@ -135,6 +151,17 @@ class SignUp extends Component {
 				style={[BaseStyle.safeAreaView]}
 				forceInset={{ top: "always" }}
 			>
+				{loading &&
+					<View style={{ position: 'absolute', backgroundColor: 'white', opacity: 0.9, height: Utils.SCREEN.HEIGHT, width: Utils.SCREEN.WIDTH, zIndex: 1 }}>
+						<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+							<View style={{ height: 80 }}>
+								<BallIndicator color={EStyleSheet.value('$btnColor')} size={50} />
+							</View>
+							<Text style={{ color: 'black', fontFamily: 'Nunito-Light', fontSize: 16 }}>Sending data.</Text>
+							<Text style={{ color: 'black', fontFamily: 'Nunito-Light', fontSize: 16 }}>Creating account.</Text>
+						</View>
+					</View>
+				}
 				<ScrollView >
 					<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
 						<Image source={Logo} />
@@ -217,9 +244,9 @@ class SignUp extends Component {
 
 						</View>
 						{error_list?.is_terms &&
-							<View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', flex: 1, flexDirection: 'row', width: '100%', height: 20 }}>
+							<View style={{ justifyContent: 'flex-start', alignItems: 'center', flex: 1, flexDirection: 'row', width: '100%', height: 25 }}>
 								<Text style={styles.errorText}>
-									{'This field require.'}
+									{'You have to accept our terms of use.'}
 								</Text>
 							</View>
 						}
@@ -249,7 +276,7 @@ class SignUp extends Component {
 							</Button>
 						</View>
 						<View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
-							<Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Already a Customer?</Text>
+							<Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Already have an account?</Text>
 							<TouchableOpacity onPress={() => this.onSignIn()}>
 								<Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>
 							</TouchableOpacity>

@@ -3,9 +3,6 @@ import base64 from 'react-native-base64';
 
 const _REQUEST2SERVER = (url, params = null, type = null) => {
 	const isGet = (params == null);
-	console.log(params);
-	console.log(BaseConfig.SERVER_HOST);
-
 	return new Promise(function (resolve, reject) {
 		fetch(`${BaseConfig.SERVER_HOST}${url}`, {
 			method: type ? type : isGet ? 'get' : 'post',
@@ -31,7 +28,13 @@ export const registration = (params) => {
 	return _REQUEST2SERVER(`User/SignUp`, params);
 }
 export const login = (params) => {
-	return _REQUEST2SERVER(`User/Login`, params);
+	return _REQUEST2SERVER(`User/SignIn`, params);
+}
+export const check_verify = (params) => {
+	return _REQUEST2SERVER(`User/CheckVerify`, params);
+}
+export const resend_code = (params) => {
+	return _REQUEST2SERVER(`User/ResendCode`, params);
 }
 export const log_out = (params) => {
 	return _REQUEST2SERVER(`User/Log_Out`, params);
@@ -45,21 +48,10 @@ export const change_password = (params) => {
 export const reset_password = (params) => {
 	return _REQUEST2SERVER(`User/Reset_Password`, params);
 }
-export const email_verification_for_login = (params) => {
-	return _REQUEST2SERVER(`User/OTP_Validation_For_Login`, params);
-}
-export const email_verification = (params) => {
-	return _REQUEST2SERVER(`User/Email_Verification`, params);
-}
+
 export const mobile_otp = (params) => {
 	return _REQUEST2SERVER(`User/Mobile_OTP`, params);
 }
 export const forgot_password = (params) => {
 	return _REQUEST2SERVER(`User/Forgot_Password`, params);
-}
-export const mobile_verification = (params) => {
-	return _REQUEST2SERVER(`User/OTP_Verification`, params);
-}
-export const email_exist = (params) => {
-	return _REQUEST2SERVER(`User/Name_Existence`, params);
 }
