@@ -1,11 +1,10 @@
+import Background from '@assets/images/background.png';
+import Logo from '@assets/images/logo1.png';
 import { BaseStyle } from "@config";
 import React, { Component } from "react";
 import { Image, SafeAreaView, View } from "react-native";
-import EStyleSheet from "react-native-extended-stylesheet";
-import {
-    BallIndicator
-} from 'react-native-indicators';
 import { connect } from "react-redux";
+
 class Loading extends Component {
     constructor(props) {
         super(props);
@@ -33,9 +32,10 @@ class Loading extends Component {
                 style={[BaseStyle.safeAreaView]}
                 forceInset={{ top: "always" }}
             >
-                <View style={{ alignItems: "center", flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
-                    <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-end' }}>
-                        <BallIndicator color={EStyleSheet.value('$btnColor')} />
+                <View style={{ alignItems: "center", flexDirection: 'column', justifyContent: 'center', height: '100%', backgroundColor: 'white' }}>
+                    <Image source={Background} style={{position: 'absolute'}}/>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
+                        <Image source={Logo}/>
                     </View>
                 </View>
             </SafeAreaView>

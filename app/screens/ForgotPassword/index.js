@@ -12,17 +12,16 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Logo from '@assets/images/logo.png';
 import styles from "./styles";
+import {
+    BallIndicator
+} from 'react-native-indicators';
 
 const ForgotPassword = (props) => {
-    const panelRef = useRef(null);
-    const [otpCode, setOtpCode] = useState("");
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [cpassword, setCPassword] = useState("");
-    const [isVerify, setVerify] = useState(false);
-    const [showOTP, setShowOTP] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error_list, setErrorList] = useState({});
+    const [error_message, setErrorMessage] = useState("");
+    const [is_valid, setIsValid] = useState(false);
     useFocusEffect(
         React.useCallback(() => {
             init();
@@ -30,116 +29,50 @@ const ForgotPassword = (props) => {
     );
     const init = () => {
         setEmail("");
-        setPassword("");
-        setCPassword("");
-        setVerify(false);
-        setShowOTP(false);
+        setErrorMessage("");
+        setIsValid(false);
         setErrorList({})
     }
     const requestOTP = () => {
+        setErrorList({})
         if (email == "") {
-            Toast.show("Please enter email address", Toast.LONG);
+            setErrorMessage("");
+            setIsValid(false);
             setErrorList({ email: true });
             return;
-        } else if (!Utils.EMAIL_VALIDATE.test((email).toLowerCase())) {
-            Toast.show("Please enter valid email address", Toast.LONG);
+        }
+        if (!Utils.EMAIL_VALIDATE.test((email).toLowerCase())) {
+            setIsValid(false)
+            setErrorMessage("");
+            setErrorMessage("Please enter valid email address");
             return;
         }
         var data = {
-            Email_Id: email
+            email: email
         }
         setLoading(true);
         apiActions.forgot_password(data)
             .then(async res => {
-                if (res?.Response_Code == '200') {
-                    setShowOTP(true);
-                    if (panelRef?.current?.state?.isPanelOpened == false) {
-                        panelRef?.current?.togglePanel();
-                    }
-                }
-            })
-            .catch(err => {
-                Toast.show("Network connection issue.");
-                console.log(err);
-            })
-            .finally(() => {
-                setLoading(false);
-            })
-    }
-    const changePass = () => {
-        if (password == "") {
-            Toast.show("Please enter password", Toast.LONG);
-            setErrorList({ password: true });
-            return;
-        } else if (!password.match(Utils?.PASSPORT_VALIDATE)) {
-            Toast.show('Passwords must contain combination of special characters and numbers including lowercase and uppercase.', Toast.LONG);
-            return;
-        } else if (cpassword == "") {
-            Toast.show("Please enter confirm password", Toast.LONG);
-            setErrorList({ cpassword: true });
-            return;
-        } else if (cpassword != password) {
-            Toast.show("Confirm Password must be same as Password", Toast.LONG);
-            return;
-        }
-        setLoading(true);
-        var data = {
-            "Email_Id": email,
-            "Password": password
-        }
-        console.log(email);
-        apiActions.reset_password(data)
-            .then((res) => {
-                Toast.show(res.UI_Display_Message, Toast.LONG);
+                console.log(res);
                 setTimeout(() => {
                     try {
-                        props.navigation.goBack();
+                        if (res?.Response_Code == '200') {
+                            props.navigation.navigate('RecoverPassword', { email: email });
+                        } else {
+                            setIsValid(true)
+                        }
+                        setLoading(false);
                     } catch (err) {
                     }
-                }, 500);
+                }, 1000);
+
             })
             .catch(err => {
+                console.log(err)
                 Toast.show("Network connection issue.");
                 console.log(err);
-            })
-            .finally(() => {
-                setPassword("");
-                setCPassword("");
-                setEmail("");
                 setLoading(false);
             })
-    }
-    const emailVerification = () => {
-        if (otpCode != "") {
-            var data = {
-                Email_Id: email,
-                E_Verification_Code: otpCode
-            }
-            console.log(data);
-            apiActions.email_verification(data)
-                .then(async res => {
-                    console.log('Email', res);
-                    if (res.Response_Code == "404") {
-                        Toast.show(res?.UI_Display_Message, Toast.LONG);
-                    } else {
-                        if (res.Response_Code == '200') {
-                            setShowOTP(false);
-                            if (panelRef?.current?.state?.isPanelOpened == true) {
-                                panelRef?.current?.togglePanel();
-                            }
-                            setVerify(true);
-                        }
-                    }
-                })
-                .catch(err => {
-                    Toast.show("Network connection issue.");
-                })
-                .finally(() => {
-                    setOtpCode("");
-                })
-        } else {
-            Toast.show("Please enter OTP code.", Toast.LONG);
-        }
     }
 
     return (
@@ -147,13 +80,30 @@ const ForgotPassword = (props) => {
             style={[BaseStyle.safeAreaView]}
             forceInset={{ top: "always" }}
         >
+            {loading &&
+                <View style={{ position: 'absolute', backgroundColor: 'white', opacity: 0.9, height: Utils.SCREEN.HEIGHT, width: Utils.SCREEN.WIDTH, zIndex: 1 }}>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ height: 80 }}>
+                            <BallIndicator color={EStyleSheet.value('$btnColor')} size={50} />
+                        </View>
+                        <Text style={{ color: 'black', fontFamily: 'Nunito-Light', fontSize: 16 }}>Sending code.</Text>
+                    </View>
+                </View>
+            }
             <ScrollView >
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
-                    <Image source={Logo} />
+                    <Image source={Logo} style={{height: 150, resizeMode: 'contain'}}/>
                 </View>
                 <View style={styles.content}>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 25 }}>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
                         <Text style={{ fontSize: 32, fontFamily: 'Nunito-Bold', color: EStyleSheet.value('$fontColor') }}>Forgot my password</Text>
+                    </View>
+                    <View style={{ alignItems: 'center', marginBottom: 25 }}>
+                        <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white', marginTop: 10 }}>Please insert here the email that you registered with </Text>
+                        <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white' }}>
+                            us in order to send to you the instructions to recover</Text>
+                        <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white' }}>
+                            your password</Text>
                     </View>
                     <View style={[BaseStyle.inputView]}>
                         <CustomAnimatedInput
@@ -162,42 +112,55 @@ const ForgotPassword = (props) => {
                             onChangeText={email => setEmail(email)}
                             placeholder={'Email'}
                             type="email"
-                            errorText={""}
                             status={email ? "update" : "new"}
-                            isError={error_list?.email}
+                            errorText={error_list?.email}
                             icon="email"
                         />
-                        <CustomAnimatedInput
-                            style={{ flex: 1, backgroundColor: 'transparent' }}
-                            value={password}
-                            onChangeText={password => {
-                                setPassword(password)
-                            }}
-                            placeholder={'Password'}
-                            type="password"
-                            status={password ? "update" : "new"}
-                            errorText={""}
-                            isError={error_list?.password}
-                            icon="password"
-                        />
                     </View>
-                    <View style={{
-                        backgroundColor: EStyleSheet.value('$errorBkColor'),
-                        opacity: 0.4,
-                        borderWidth: 2,
-                        borderColor: EStyleSheet.value('$errorBorderColor'),
-                        borderRadius: 8,
-                        marginTop: 15,
-                        padding: 10
-                    }}>
-                        <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor') }}>The user is not registered. Please try again</Text>
-                    </View>
-                    <View style={{ width: "100%", marginTop: 15 }}>
+                    {!!error_message && !is_valid &&
+                        <View style={{
+                            backgroundColor: EStyleSheet.value('$errorBkColor'),
+                            opacity: 0.4,
+                            borderWidth: 2,
+                            borderColor: EStyleSheet.value('$errorBorderColor'),
+                            borderRadius: 8,
+                            marginTop: 15,
+                            padding: 10
+                        }}>
+                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center' }}>{error_message}</Text>
+                        </View>
+                    }
+                    {is_valid &&
+                        <View style={{
+                            backgroundColor: EStyleSheet.value('$errorBkColor'),
+                            opacity: 0.4,
+                            borderWidth: 2,
+                            borderColor: EStyleSheet.value('$errorBorderColor'),
+                            borderRadius: 8,
+                            padding: 10,
+                            marginTop: 20,
+                        }}>
+                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'center', fontSize: 12 }}>The user is not registered. Would you want to register
+                            </Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start', fontSize: 12 }}>
+                                    a new account?
+                                </Text>
+                                <TouchableOpacity onPress={() => {
+                                    props.navigation.navigate('SignUp')
+                                }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                                    <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}> Click Here</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    }
+                    <View style={{ width: "100%", marginTop: 25 }}>
                         <Button
                             full
-                            loading={loading}
                             onPress={() => {
-
+                                if (!loading) {
+                                    requestOTP()
+                                }
                             }}
                         >
                             Send code

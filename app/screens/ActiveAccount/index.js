@@ -160,14 +160,14 @@ const ActiveAccount = (props) => {
                             marginBottom: 20,
                             marginHorizontal: 10
                         }}>
-                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'center' }}>The code is not correct. Would you want to
+                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'center', fontSize: 12 }}>The code is not correct. Would you want to
                             </Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start', fontSize: 12 }}>
                                     resend the activeation code?
                                 </Text>
                                 <TouchableOpacity onPress={resendCode} style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor') }}>Click Here</Text>
+                                    <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}>Click Here</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

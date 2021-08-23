@@ -1,37 +1,38 @@
-import { apiActions, actionTypes } from "@actions";
+import { actionTypes, apiActions } from "@actions";
+import Logo from '@assets/images/logo.png';
 import { Button } from "@components";
 import CustomAnimatedInput from "@components/CustomAnimatedInput";
 import { BaseConfig, BaseStyle } from "@config";
 import * as Utils from "@utils";
 import React, { Component } from "react";
-import { BackHandler, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Toast from 'react-native-simple-toast';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { connect } from "react-redux";
-import styles from "./styles";
-import IcMail from '@assets/images/mail.png';
-import IcLock from '@assets/images/lock.png';
-import Logo from '@assets/images/logo.png';
 import {
 	BallIndicator
 } from 'react-native-indicators';
+import Toast from 'react-native-simple-toast';
+import { connect } from "react-redux";
+import styles from "./styles";
 class SignIn extends Component {
 	constructor(props) {
 		super(props);
 		this.initState = {
 			loading: false,
-			email: BaseConfig.DEVELOP_MEDE ? "olaguivelgabriel20@gmail.com" : '',
-			password: BaseConfig.DEVELOP_MEDE ? "Test@12345" : '',
+			email: BaseConfig.DEVELOP_MODE ? "olaguivelgabriel20@gmail.com" : '',
+			password: BaseConfig.DEVELOP_MODE ? "Test@12345" : '',
 			error_list: {},
 			error_message: "",
-			success_message: ""
+			success_message: "",
 		};
 		this.state = this.initState;
 	}
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.route.params?.is_change) {
+			this.setState({success_message: 'Your password was updated with success, you can log in with it.'})
+		}
+	}
 	componentDidMount() {
-
+		
 	}
 
 	componentWillUnmount() {
@@ -124,7 +125,7 @@ class SignIn extends Component {
 				}
 				<ScrollView >
 					<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
-						<Image source={Logo} />
+						<Image source={Logo} style={{ height: 150, resizeMode: 'contain' }} />
 					</View>
 					<View style={styles.content}>
 						<View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 25 }}>

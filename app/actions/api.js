@@ -37,21 +37,11 @@ export const resend_code = (params) => {
 	return _REQUEST2SERVER(`User/ResendCode`, params);
 }
 export const log_out = (params) => {
-	return _REQUEST2SERVER(`User/Log_Out`, params);
-}
-export const check_password = (params) => {
-	return _REQUEST2SERVER(`User/Old_Password_Check`, params);
+	return _REQUEST2SERVER(`User/LogOut`, params);
 }
 export const change_password = (params) => {
-	return _REQUEST2SERVER(`User/Change_Password`, params);
-}
-export const reset_password = (params) => {
-	return _REQUEST2SERVER(`User/Reset_Password`, params);
-}
-
-export const mobile_otp = (params) => {
-	return _REQUEST2SERVER(`User/Mobile_OTP`, params);
+	return _REQUEST2SERVER(`User/ChangePassword`, params);
 }
 export const forgot_password = (params) => {
-	return _REQUEST2SERVER(`User/Forgot_Password`, params);
+	return _REQUEST2SERVER(`User/ForgotPassword`, params);
 }

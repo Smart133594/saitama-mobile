@@ -7,9 +7,6 @@ import React, { Component } from "react";
 import { BackHandler, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Toast from 'react-native-simple-toast';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from "react-redux";
 import styles from "./styles";
 import Logo from '@assets/images/logo.png';
@@ -23,11 +20,11 @@ class SignUp extends Component {
 		super(props);
 		this.initState = {
 			loading: false,
-			fname: 'fname',
-			lname: 'lname',
-			email: 'olaguivelgabriel20@gmail.com',
-			password: 'Test@123',
-			cpassword: 'Test@123',
+			fname: BaseConfig.DEVELOP_MODE ? 'fname' : '',
+			lname: BaseConfig.DEVELOP_MODE ? 'lname' : "",
+			email: BaseConfig.DEVELOP_MODE ? 'olaguivelgabriel20@gmail.com' : '',
+			password: BaseConfig.DEVELOP_MODE ? 'Test@123' : '',
+			cpassword: BaseConfig.DEVELOP_MODE ? 'Test@123' : '',
 			showPass: true,
 			showConfirmPass: true,
 			isEmail: true,
@@ -128,7 +125,7 @@ class SignUp extends Component {
 						} else {
 							setTimeout(() => {
 								try {
-									this.setState({error_message: response?.UI_Display_Message})
+									this.setState({ error_message: response?.UI_Display_Message })
 									this.setState({ loading: false })
 								} catch (err) {
 								}
@@ -164,7 +161,7 @@ class SignUp extends Component {
 				}
 				<ScrollView >
 					<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
-						<Image source={Logo} />
+						<Image source={Logo} style={{ height: 150, resizeMode: 'contain' }} />
 					</View>
 					<View style={styles.content}>
 						<View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 25 }}>

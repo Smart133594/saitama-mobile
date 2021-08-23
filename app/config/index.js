@@ -3,8 +3,6 @@ import { Typography, FontWeight, FontFamily } from "./typography";
 import { BaseStyle } from "./theme";
 import Responsive from "./responsive";
 import * as BaseConfig from "./BaseConfig";
-import { StatesList } from "./states";
-import { CountryCode } from "./countrycode";
 
 export {
   BaseColor,
@@ -14,6 +12,4 @@ export {
   BaseStyle,
   BaseConfig,
   Responsive,
-  StatesList,
-  CountryCode
 };

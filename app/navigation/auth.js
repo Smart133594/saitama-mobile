@@ -7,6 +7,8 @@ import SignIn from "@screens/SignIn";
 import SignUp from "@screens/SignUp";
 import ActiveAccount from "@screens/ActiveAccount";
 import ForgotPassword from "@screens/ForgotPassword";
+import RecoverPassword from "@screens/RecoverPassword";
+import ChangePassword from "@screens/ChangePassword";
 import Welcome from "@screens/Welcome";
 const Stack = createStackNavigator();
 
@@ -23,6 +25,8 @@ export default function Navigation() {
           <Stack.Screen name="Welcome" component={Welcome} />
           <Stack.Screen name="ActiveAccount" component={ActiveAccount} />
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+          <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

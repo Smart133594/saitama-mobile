@@ -101,7 +101,7 @@ const CustomAnimatedInput = ({
         </View>
         <View style={{justifyContent: 'flex-start', alignItems: 'flex-start', flex: 1, flexDirection: 'row', width: '100%', height: 20}}>
             {!!errorText && <Text style={styles.errorText}>
-                {'This field require.'}
+                {'This field is required.'}
             </Text>}
         </View>
     </React.Fragment>
