@@ -231,8 +231,11 @@ class SignUp extends Component {
 							<CheckBox
 								disabled={false}
 								value={is_terms}
+								style={{height: 20}}
 								onValueChange={(value) => this.setState({ is_terms: value })}
 								tintColors={{ true: "#ffffff", false: "#ffffff" }}
+								onCheckColor={"#ffffff"}
+								onTintColor={"#ffffff"}
 							/>
 							<View style={{ flexDirection: 'column' }}>
 								<Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>I agree to the</Text>
