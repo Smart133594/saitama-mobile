@@ -9,12 +9,16 @@ import {
 } from 'react-native';
 import AnimatedInput from '../AnimatedInput';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import Zocial from 'react-native-vector-icons/Zocial';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Utils from '@utils';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import IcMail from '@assets/images/mail.png';
 import IcLock from '@assets/images/lock.png';
 import IcFirst from '@assets/images/name_first.png';
 import IcLast from '@assets/images/name_last.png';
+
 const CustomAnimatedInput = ({
     placeholder,
     placeholderStyle,
@@ -50,19 +54,21 @@ const CustomAnimatedInput = ({
         <View style={[styles.wrapper, !!errorText ? styles.hasError : {}, style]}>
             <View style={{
                 paddingHorizontal: 8,
-                paddingRight: 30
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 50
             }}>
                 {icon == 'email' &&
-                    <Image source={IcMail} style={{ height: 25, resizeMode: 'contain' }} />
+                    <Zocial name="email" size={22} color="white"/>
                 }
                 {icon == 'password' &&
-                    <Image source={IcLock} style={{ height: 20, resizeMode: 'contain' }} />
+                    <Fontisto name="locked" size={22} color="white" />
                 }
                 {icon == 'first' &&
-                    <Image source={IcFirst} style={{ height: 20, resizeMode: 'contain' }} />
+                    <MaterialCommunityIcons name="account-circle" color="white" size={25}/>
                 }
                 {icon == 'last' &&
-                    <Image source={IcLast} style={{ height: 20, resizeMode: 'contain' }} />
+                    <MaterialCommunityIcons name="account-circle-outline" color="white" size={25}/>
                 }
             </View>
             <AnimatedInput

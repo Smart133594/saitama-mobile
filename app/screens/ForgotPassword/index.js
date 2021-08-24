@@ -92,7 +92,7 @@ const ForgotPassword = (props) => {
             }
             <ScrollView >
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
-                    <Image source={Logo} style={{height: 150, resizeMode: 'contain'}}/>
+                    <Image source={Logo} style={{ height: 150, resizeMode: 'contain' }} />
                 </View>
                 <View style={styles.content}>
                     <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
@@ -125,7 +125,8 @@ const ForgotPassword = (props) => {
                             borderColor: EStyleSheet.value('$errorBorderColor'),
                             borderRadius: 8,
                             marginTop: 15,
-                            padding: 10
+                            padding: 10,
+                            width: '100%'
                         }}>
                             <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center' }}>{error_message}</Text>
                         </View>
@@ -139,18 +140,13 @@ const ForgotPassword = (props) => {
                             borderRadius: 8,
                             padding: 10,
                             marginTop: 20,
+                            width: '100%'
                         }}>
-                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'center', fontSize: 12 }}>The user is not registered. Would you want to register
-                            </Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                 <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start', fontSize: 12 }}>
-                                    a new account?
+                                    The user is not registered. Would you want to register a new account?
+                                    <Text onPress={() => props.navigation.navigate('SignUp')} style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}> Click Here</Text>
                                 </Text>
-                                <TouchableOpacity onPress={() => {
-                                    props.navigation.navigate('SignUp')
-                                }} style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}> Click Here</Text>
-                                </TouchableOpacity>
                             </View>
                         </View>
                     }
@@ -166,7 +162,7 @@ const ForgotPassword = (props) => {
                             Send code
                         </Button>
                     </View>
-                    <View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
+                    <View style={{ width: "100%", marginTop: 20, justifyContent: 'center', flexDirection: 'row' }}>
                         <Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>You already remember?</Text>
                         <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
                             <Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>

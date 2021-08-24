@@ -62,6 +62,7 @@ const RecoverPassword = (props) => {
         }
         var data = {
             email: email,
+            type: 1
         }
         setResending(true);
         setLoading(true);
@@ -124,7 +125,6 @@ const RecoverPassword = (props) => {
                     <OTPInputView style={{ width: '80%', height: 100 }}
                         pinCount={6}
                         autoFocusOnLoad
-                        keyboardType="default"
                         codeInputFieldStyle={styles.underlineStyleBase}
                         codeInputHighlightStyle={styles.underlineStyleHighLighted}
                         onCodeFilled={(code => {
@@ -144,15 +144,11 @@ const RecoverPassword = (props) => {
                             padding: 10,
                             marginBottom: 20,
                         }}>
-                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'center', fontSize: 12 }}>The code is not correct. Would you want to
-                            </Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                 <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start', fontSize: 12 }}>
-                                    resend the activeation code?
+                                    The code is not correct. Would you want to resend the activeation code? 
+                                    <Text onPress={resendCode} style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}> Click Here</Text>
                                 </Text>
-                                <TouchableOpacity onPress={resendCode} style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}>Click Here</Text>
-                                </TouchableOpacity>
                             </View>
                         </View>
                     }

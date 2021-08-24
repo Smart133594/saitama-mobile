@@ -68,6 +68,7 @@ const ActiveAccount = (props) => {
         }
         var data = {
             email: user_details.email,
+            type: 0
         }
         setResending(true);
         setLoading(true);
@@ -140,7 +141,6 @@ const ActiveAccount = (props) => {
                     <OTPInputView style={{ width: '80%', height: 100 }}
                         pinCount={6}
                         autoFocusOnLoad
-                        keyboardType="default"
                         codeInputFieldStyle={styles.underlineStyleBase}
                         codeInputHighlightStyle={styles.underlineStyleHighLighted}
                         onCodeFilled={(code => {
@@ -158,17 +158,14 @@ const ActiveAccount = (props) => {
                             borderRadius: 8,
                             padding: 10,
                             marginBottom: 20,
-                            marginHorizontal: 10
+                            marginHorizontal: 10,
+                            width: '90%'
                         }}>
-                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'center', fontSize: 12 }}>The code is not correct. Would you want to
-                            </Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                 <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start', fontSize: 12 }}>
-                                    resend the activeation code?
+                                    The code is not correct. Would you want to resend the activeation code?
+                                    <Text onPress={resendCode} style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}> Click Here</Text>
                                 </Text>
-                                <TouchableOpacity onPress={resendCode} style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}>Click Here</Text>
-                                </TouchableOpacity>
                             </View>
                         </View>
                     }
@@ -181,7 +178,8 @@ const ActiveAccount = (props) => {
                             borderRadius: 8,
                             padding: 10,
                             marginBottom: 20,
-                            marginHorizontal: 10
+                            marginHorizontal: 10,
+                            width: '90%'
                         }}>
                             <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$successColor'), textAlign: 'center' }}>{success_message}</Text>
                         </View>
@@ -189,6 +187,12 @@ const ActiveAccount = (props) => {
                     <TouchableOpacity onPress={checkAccount} disabled={!is_code} style={{ backgroundColor: EStyleSheet.value(!is_code ? '$disableColor' : '$btnColor'), padding: 10, width: '90%', alignItems: 'center', borderRadius: 50 }}>
                         <Text style={{ fontSize: 20, fontFamily: 'Nunito-Bold', color: 'white' }} >Activate account</Text>
                     </TouchableOpacity>
+                    <View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
+                        <Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Already have an account?</Text>
+                        <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
+                            <Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>

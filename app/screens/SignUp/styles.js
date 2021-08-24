@@ -9,6 +9,7 @@ export default EStyleSheet.create({
         fontSize: 11,
         lineHeight: 16,
         paddingLeft: 10,
-        fontFamily: 'OpenSans-Light'
+        fontFamily: 'OpenSans-Light',
+        textAlign: 'center'
     },
 });

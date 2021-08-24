@@ -147,7 +147,8 @@ const ChangePassword = (props) => {
                             borderColor: EStyleSheet.value('$errorBorderColor'),
                             borderRadius: 8,
                             marginTop: 15,
-                            padding: 10
+                            padding: 10,
+                            width: '100%'
                         }}>
                             <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center' }}>{error_message}</Text>
                         </View>

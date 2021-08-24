@@ -236,9 +236,8 @@ class SignUp extends Component {
 							/>
 							<View style={{ flexDirection: 'column' }}>
 								<Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>I agree to the</Text>
-								<Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Saitama Inu Terms of Use and Privacy Policy</Text>
+								<Text onPress={() => this.props.navigation.navigate('Terms')} style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}><Text>Saitama Inu Terms of Use</Text> <Text style={{ color: 'white' }}>and</Text> <Text onPress={() => this.props.navigation.navigate('PrivacyPolicy')}>Privacy Policy</Text></Text>
 							</View>
-
 						</View>
 						{error_list?.is_terms &&
 							<View style={{ justifyContent: 'flex-start', alignItems: 'center', flex: 1, flexDirection: 'row', width: '100%', height: 25 }}>
@@ -255,7 +254,8 @@ class SignUp extends Component {
 								borderColor: EStyleSheet.value('$errorBorderColor'),
 								borderRadius: 8,
 								marginTop: 15,
-								padding: 10
+								padding: 10,
+								width: '100%'
 							}}>
 								<Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor') }}>{error_message}</Text>
 							</View>
