@@ -96,83 +96,85 @@ const ChangePassword = (props) => {
                     </View>
                 </View>
             }
-            <ScrollView >
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
-                    <Image source={Logo} style={{ height: 150, resizeMode: 'contain' }} />
-                </View>
-                <View style={styles.content}>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
-                        <Text style={{ fontSize: 32, fontFamily: 'Nunito-Bold', color: EStyleSheet.value('$fontColor') }}>Forgot my password</Text>
+            <KeyboardAvoidingView behavior="position">
+                <ScrollView >
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
+                        <Image source={Logo} style={{ height: 150, resizeMode: 'contain' }} />
                     </View>
-                    <View style={{ alignItems: 'center', marginBottom: 25 }}>
-                        <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white', marginTop: 10 }}>Please insert here the email that you registered with </Text>
-                        <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white' }}>
-                            us in order to send to you the instructions to recover</Text>
-                        <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white' }}>
-                            your password</Text>
-                    </View>
-                    <View style={[BaseStyle.inputView]}>
-                        <CustomAnimatedInput
-                            style={{ flex: 1, backgroundColor: 'transparent' }}
-                            value={password}
-                            onChangeText={password => {
-                                setPassword(password)
-                            }}
-                            placeholder={'New password'}
-                            type="password"
-                            status={password ? "update" : "new"}
-                            errorText={""}
-                            isError={error_list?.password}
-                            icon="password"
-                        />
-                        <CustomAnimatedInput
-                            style={{ flex: 1, backgroundColor: 'transparent' }}
-                            value={cpassword}
-                            onChangeText={cpassword => {
-                                setCPassword(cpassword)
-                            }}
-                            placeholder={'Confirm new password'}
-                            type="password"
-                            status={password ? "update" : "new"}
-                            errorText={""}
-                            isError={error_list?.password}
-                            icon="password"
-                        />
-                    </View>
-                    {!!error_message &&
-                        <View style={{
-                            backgroundColor: EStyleSheet.value('$errorBkColor'),
-                            opacity: 0.4,
-                            borderWidth: 2,
-                            borderColor: EStyleSheet.value('$errorBorderColor'),
-                            borderRadius: 8,
-                            marginTop: 15,
-                            padding: 10,
-                            width: '100%'
-                        }}>
-                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center' }}>{error_message}</Text>
+                    <View style={styles.content}>
+                        <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+                            <Text style={{ fontSize: 32, fontFamily: 'Nunito-Bold', color: EStyleSheet.value('$fontColor') }}>Forgot my password</Text>
                         </View>
-                    }
-                    <View style={{ width: "100%", marginTop: 25 }}>
-                        <Button
-                            full
-                            onPress={() => {
-                                if (!loading) {
-                                    changePass()
-                                }
-                            }}
-                        >
-                            Update my password
-                        </Button>
+                        <View style={{ alignItems: 'center', marginBottom: 25 }}>
+                            <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white', marginTop: 10 }}>Please insert here the email that you registered with </Text>
+                            <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white' }}>
+                                us in order to send to you the instructions to recover</Text>
+                            <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white' }}>
+                                your password</Text>
+                        </View>
+                        <View style={[BaseStyle.inputView]}>
+                            <CustomAnimatedInput
+                                style={{ flex: 1, backgroundColor: 'transparent' }}
+                                value={password}
+                                onChangeText={password => {
+                                    setPassword(password)
+                                }}
+                                placeholder={'New password'}
+                                type="password"
+                                status={password ? "update" : "new"}
+                                errorText={""}
+                                isError={error_list?.password}
+                                icon="password"
+                            />
+                            <CustomAnimatedInput
+                                style={{ flex: 1, backgroundColor: 'transparent' }}
+                                value={cpassword}
+                                onChangeText={cpassword => {
+                                    setCPassword(cpassword)
+                                }}
+                                placeholder={'Confirm new password'}
+                                type="password"
+                                status={password ? "update" : "new"}
+                                errorText={""}
+                                isError={error_list?.password}
+                                icon="password"
+                            />
+                        </View>
+                        {!!error_message &&
+                            <View style={{
+                                backgroundColor: EStyleSheet.value('$errorBkColor'),
+                                opacity: 0.4,
+                                borderWidth: 2,
+                                borderColor: EStyleSheet.value('$errorBorderColor'),
+                                borderRadius: 8,
+                                marginTop: 15,
+                                padding: 10,
+                                width: '100%'
+                            }}>
+                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center' }}>{error_message}</Text>
+                            </View>
+                        }
+                        <View style={{ width: "100%", marginTop: 25 }}>
+                            <Button
+                                full
+                                onPress={() => {
+                                    if (!loading) {
+                                        changePass()
+                                    }
+                                }}
+                            >
+                                Update my password
+                            </Button>
+                        </View>
+                        <View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
+                            <Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>You already remember?</Text>
+                            <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
+                                <Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
-                        <Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>You already remember?</Text>
-                        <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
-                            <Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }

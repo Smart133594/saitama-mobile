@@ -133,85 +133,87 @@ const ActiveAccount = (props) => {
                     </View>
                 </View>
             }
-            <ScrollView>
-                <View style={{ alignItems: 'center' }}>
-                    <Image source={Logo} style={{ height: 120, resizeMode: 'contain', marginTop: 80 }} />
-                    <View style={{ backgroundColor: 'white', borderRadius: 100, padding: 5, marginTop: 40, backgroundColor: 'white' }}>
-                        <Image source={Success} style={{ height: 100, width: 100 }} />
-                    </View>
-                    <View style={{ alignItems: 'center', marginTop: 10 }}>
-                        {type == 0 &&
-                            <>
-                                <Text style={{ fontSize: 25, fontFamily: 'Nunito-Bold', color: 'white' }}>Congratulations!</Text>
-                                <Text style={{ fontSize: 25, fontFamily: 'Nunito-Bold', color: 'white' }}>You are registered</Text>
-                            </>
-                        }
-                        {type == 1 &&
-                            <Text style={{ fontSize: 25, fontFamily: 'Nunito-Bold', color: 'white' }}>Activation code</Text>
-                        }
-                        <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white', marginTop: 10 }}>Please insert here the code that we sent to your</Text>
-                        <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white' }}>
-                            email in order to activate your account</Text>
-                    </View>
-                    <OTPInputView style={{ width: '80%', height: 100 }}
-                        pinCount={6}
-                        autoFocusOnLoad
-                        code={verify_code}
-                        codeInputFieldStyle={styles.underlineStyleBase}
-                        codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                        onCodeChanged={(code) => setVerifyCode(code)}
-                        onCodeFilled={(code => {
-                            setVerifyCode(code);
-                            setIsCode(true);
-                            console.log(`Code is ${code}, you are good to go!`)
-                        })} />
+            <KeyboardAvoidingView behavior="position">
+                <ScrollView>
+                    <View style={{ alignItems: 'center' }}>
+                        <Image source={Logo} style={{ height: 120, resizeMode: 'contain', marginTop: 80 }} />
+                        <View style={{ backgroundColor: 'white', borderRadius: 100, padding: 5, marginTop: 40, backgroundColor: 'white' }}>
+                            <Image source={Success} style={{ height: 100, width: 100 }} />
+                        </View>
+                        <View style={{ alignItems: 'center', marginTop: 10 }}>
+                            {type == 0 &&
+                                <>
+                                    <Text style={{ fontSize: 25, fontFamily: 'Nunito-Bold', color: 'white' }}>Congratulations!</Text>
+                                    <Text style={{ fontSize: 25, fontFamily: 'Nunito-Bold', color: 'white' }}>You are registered</Text>
+                                </>
+                            }
+                            {type == 1 &&
+                                <Text style={{ fontSize: 25, fontFamily: 'Nunito-Bold', color: 'white' }}>Activation code</Text>
+                            }
+                            <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white', marginTop: 10 }}>Please insert here the code that we sent to your</Text>
+                            <Text style={{ fontSize: 12, fontFamily: 'OpenSans-Light', color: 'white' }}>
+                                email in order to activate your account</Text>
+                        </View>
+                        <OTPInputView style={{ width: '80%', height: 100 }}
+                            pinCount={6}
+                            autoFocusOnLoad
+                            code={verify_code}
+                            codeInputFieldStyle={styles.underlineStyleBase}
+                            codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                            onCodeChanged={(code) => setVerifyCode(code)}
+                            onCodeFilled={(code => {
+                                setVerifyCode(code);
+                                setIsCode(true);
+                                console.log(`Code is ${code}, you are good to go!`)
+                            })} />
 
-                    {!!error_message &&
-                        <View style={{
-                            backgroundColor: EStyleSheet.value('$errorBkColor'),
-                            opacity: 0.4,
-                            borderWidth: 2,
-                            borderColor: EStyleSheet.value('$errorBorderColor'),
-                            borderRadius: 8,
-                            padding: 10,
-                            marginBottom: 20,
-                            marginHorizontal: 10,
-                            width: '90%'
-                        }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start', fontSize: 12 }}>
-                                    The code is not correct. Would you want to resend the activation code?
-                                    <Text onPress={resendCode} style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}> Click Here</Text>
-                                </Text>
+                        {!!error_message &&
+                            <View style={{
+                                backgroundColor: EStyleSheet.value('$errorBkColor'),
+                                opacity: 0.4,
+                                borderWidth: 2,
+                                borderColor: EStyleSheet.value('$errorBorderColor'),
+                                borderRadius: 8,
+                                padding: 10,
+                                marginBottom: 20,
+                                marginHorizontal: 10,
+                                width: '90%'
+                            }}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                    <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start', fontSize: 12 }}>
+                                        The code is not correct. Would you want to resend the activation code?
+                                        <Text onPress={resendCode} style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}> Click Here</Text>
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                    }
-                    {!!success_message &&
-                        <View style={{
-                            backgroundColor: EStyleSheet.value('$successBkColor'),
-                            opacity: 0.4,
-                            borderWidth: 2,
-                            borderColor: EStyleSheet.value('$successBorderColor'),
-                            borderRadius: 8,
-                            padding: 10,
-                            marginBottom: 20,
-                            marginHorizontal: 10,
-                            width: '90%'
-                        }}>
-                            <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$successColor'), textAlign: 'center' }}>{success_message}</Text>
-                        </View>
-                    }
-                    <TouchableOpacity onPress={checkAccount} disabled={!is_code} style={{ backgroundColor: EStyleSheet.value(!is_code ? '$disableColor' : '$btnColor'), padding: 10, width: '90%', alignItems: 'center', borderRadius: 50 }}>
-                        <Text style={{ fontSize: 20, fontFamily: 'Nunito-Bold', color: 'white' }} >Activate account</Text>
-                    </TouchableOpacity>
-                    <View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
-                        <Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Already have an account?</Text>
-                        <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
-                            <Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>
+                        }
+                        {!!success_message &&
+                            <View style={{
+                                backgroundColor: EStyleSheet.value('$successBkColor'),
+                                opacity: 0.4,
+                                borderWidth: 2,
+                                borderColor: EStyleSheet.value('$successBorderColor'),
+                                borderRadius: 8,
+                                padding: 10,
+                                marginBottom: 20,
+                                marginHorizontal: 10,
+                                width: '90%'
+                            }}>
+                                <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$successColor'), textAlign: 'center' }}>{success_message}</Text>
+                            </View>
+                        }
+                        <TouchableOpacity onPress={checkAccount} disabled={!is_code} style={{ backgroundColor: EStyleSheet.value(!is_code ? '$disableColor' : '$btnColor'), padding: 10, width: '90%', alignItems: 'center', borderRadius: 50 }}>
+                            <Text style={{ fontSize: 20, fontFamily: 'Nunito-Bold', color: 'white' }} >Activate account</Text>
                         </TouchableOpacity>
+                        <View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
+                            <Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Already have an account?</Text>
+                            <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
+                                <Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }
