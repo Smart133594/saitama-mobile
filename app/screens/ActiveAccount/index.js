@@ -205,7 +205,7 @@ const ActiveAccount = (props) => {
                         <TouchableOpacity onPress={checkAccount} disabled={!is_code} style={{ backgroundColor: EStyleSheet.value(!is_code ? '$disableColor' : '$btnColor'), padding: 10, width: '90%', alignItems: 'center', borderRadius: 50 }}>
                             <Text style={{ fontSize: 20, fontFamily: 'Nunito-Bold', color: 'white' }} >Activate account</Text>
                         </TouchableOpacity>
-                        <View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
+                        <View style={{ width: "100%", marginTop: 20, justifyContent: 'center', flexDirection: 'row' }}>
                             <Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Already have an account?</Text>
                             <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
                                 <Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>

@@ -275,7 +275,7 @@ class SignUp extends Component {
 									Create account
 								</Button>
 							</View>
-							<View style={{ width: "100%", marginTop: 10, justifyContent: 'center', flexDirection: 'row' }}>
+							<View style={{ width: "100%", marginTop: 20, justifyContent: 'center', flexDirection: 'row' }}>
 								<Text style={{ color: EStyleSheet.value('$fontColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}>Already have an account?</Text>
 								<TouchableOpacity onPress={() => this.onSignIn()}>
 									<Text style={{ color: EStyleSheet.value('$btnColor'), fontFamily: 'OpenSans-Light', fontSize: 12 }}> Log In</Text>
