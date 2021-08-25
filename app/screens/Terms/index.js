@@ -10,9 +10,9 @@ const Terms = (props) => {
             forceInset={{ top: "always" }}
         >
             <ScrollView style={{ backgroundColor: 'white' }}>
-                <View style={{ margin: 20, paddingBottom: 0, borderBottomWidth: 2, borderColor: EStyleSheet.value('$btnColor'), flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 24, fontFamily: 'OpenSans-Bold', flex: 1, color: 'black' }}>Terms of use</Text>
-                    <Text onPress={() => props.navigation.goBack()} style={{ fontSize: 24, color: EStyleSheet.value('$btnColor'), fontWeight: 'bold' }}>x</Text>
+                <View style={{ margin: 20, paddingBottom: 0, borderBottomWidth: 2, borderColor: EStyleSheet.value('$btnColor'), flexDirection: 'row', alignItems: 'center', paddingBottom: 5 }}>
+                    <Text style={{ fontSize: 24, fontFamily: 'Nunito-Bold', flex: 1, color: 'black' }}>Terms of use</Text>
+                    <Text onPress={() => props.navigation.goBack()} style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: EStyleSheet.value('$btnColor') }}>x</Text>
                 </View>
                 <View style={{ alignItems: 'center', margin: 20, marginTop: 10 }}>
                     <View style={{ alignItems: 'center' }}>

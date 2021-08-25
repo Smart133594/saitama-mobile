@@ -3,7 +3,7 @@ import { Button } from "@components";
 import CustomAnimatedInput from "@components/CustomAnimatedInput";
 import { BaseConfig, BaseStyle } from "@config";
 import * as Utils from "@utils";
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { BackHandler, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Image, KeyboardAvoidingView } from "react-native";
 import { connect } from "react-redux";
 import styles from "./styles";
@@ -94,7 +94,22 @@ const ActiveAccount = (props) => {
                 setLoading(false);
             })
     }
-
+    useEffect(() => {
+        if (!!success_message) {
+            setIsCode(false);
+            setVerifyCode("");
+            let timer = setTimeout(() => {
+                try {
+                    setSuccessMessage("");
+                    setLoading(false);
+                } catch (err) {
+                }
+            }, 10000);
+            return () => {
+                clearTimeout(timer);
+            };
+        }
+    }, [success_message])
     return (
         <SafeAreaView
             style={[BaseStyle.safeAreaView]}
@@ -141,8 +156,10 @@ const ActiveAccount = (props) => {
                     <OTPInputView style={{ width: '80%', height: 100 }}
                         pinCount={6}
                         autoFocusOnLoad
+                        code={verify_code}
                         codeInputFieldStyle={styles.underlineStyleBase}
                         codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                        onCodeChanged={(code) => setVerifyCode(code)}
                         onCodeFilled={(code => {
                             setVerifyCode(code);
                             setIsCode(true);
@@ -163,7 +180,7 @@ const ActiveAccount = (props) => {
                         }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                 <Text style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$errorColor'), textAlign: 'center', alignItems: 'flex-start', justifyContent: 'flex-start', fontSize: 12 }}>
-                                    The code is not correct. Would you want to resend the activeation code?
+                                    The code is not correct. Would you want to resend the activation code?
                                     <Text onPress={resendCode} style={{ fontFamily: 'OpenSans-SemiBold', color: EStyleSheet.value('$btnColor'), fontSize: 12 }}> Click Here</Text>
                                 </Text>
                             </View>

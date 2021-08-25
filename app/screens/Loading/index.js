@@ -29,7 +29,6 @@ class Loading extends Component {
     render() {
         return (
             <SafeAreaView
-                style={[BaseStyle.safeAreaView]}
                 forceInset={{ top: "always" }}
             >
                 <View style={{ alignItems: "center", flexDirection: 'column', justifyContent: 'center', height: '100%', backgroundColor: 'white' }}>
