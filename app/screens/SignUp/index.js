@@ -4,7 +4,7 @@ import CustomAnimatedInput from "@components/CustomAnimatedInput";
 import { BaseConfig, BaseStyle } from "@config";
 import * as Utils from "@utils";
 import React, { Component } from "react";
-import { BackHandler, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Image, KeyboardAvoidingView } from "react-native";
+import { BackHandler, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Image, KeyboardAvoidingView, Platform } from "react-native";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Toast from 'react-native-simple-toast';
 import { connect } from "react-redux";
@@ -158,7 +158,7 @@ class SignUp extends Component {
 						</View>
 					</View>
 				}
-				<KeyboardAvoidingView behavior='position'>
+				<KeyboardAvoidingView behavior={Platform.OS == 'android' ? "height" : "position"}>
 					<ScrollView >
 						<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
 							<Image source={Logo} style={{ height: 150, resizeMode: 'contain' }} />

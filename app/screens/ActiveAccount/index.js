@@ -4,7 +4,7 @@ import CustomAnimatedInput from "@components/CustomAnimatedInput";
 import { BaseConfig, BaseStyle } from "@config";
 import * as Utils from "@utils";
 import React, { Component, useEffect, useState } from "react";
-import { BackHandler, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Image, KeyboardAvoidingView } from "react-native";
+import { BackHandler, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Image, KeyboardAvoidingView, Platform } from "react-native";
 import { connect } from "react-redux";
 import styles from "./styles";
 import Logo from '@assets/images/logo.png';
@@ -133,7 +133,7 @@ const ActiveAccount = (props) => {
                     </View>
                 </View>
             }
-            <KeyboardAvoidingView behavior="position">
+            <KeyboardAvoidingView behavior={Platform.OS == 'android' ? "height" : "position"}>
                 <ScrollView>
                     <View style={{ alignItems: 'center' }}>
                         <Image source={Logo} style={{ height: 120, resizeMode: 'contain', marginTop: 80 }} />

@@ -90,7 +90,7 @@ const ForgotPassword = (props) => {
                     </View>
                 </View>
             }
-            <KeyboardAvoidingView behavior="position">
+            <KeyboardAvoidingView behavior={Platform.OS == 'android' ? "height" : "position"}>
                 <ScrollView >
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
                         <Image source={Logo} style={{ height: 150, resizeMode: 'contain' }} />

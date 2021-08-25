@@ -5,7 +5,7 @@ import CustomAnimatedInput from "@components/CustomAnimatedInput";
 import { BaseConfig, BaseStyle } from "@config";
 import * as Utils from "@utils";
 import React, { Component } from "react";
-import { Image, KeyboardAvoidingView, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {
 	BallIndicator
@@ -127,7 +127,7 @@ class SignIn extends Component {
 						</View>
 					</View>
 				}
-				<KeyboardAvoidingView behavior="position">
+				<KeyboardAvoidingView behavior={Platform.OS == 'android' ? "height" : "position"}>
 					<ScrollView >
 						<View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80 }}>
 							<Image source={Logo} style={{ height: 150, resizeMode: 'contain' }} />
