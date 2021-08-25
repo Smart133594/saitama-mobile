@@ -136,8 +136,8 @@ const ActiveAccount = (props) => {
             <KeyboardAvoidingView behavior={Platform.OS == 'android' ? "height" : "position"}>
                 <ScrollView>
                     <View style={{ alignItems: 'center' }}>
-                        <Image source={Logo} style={{ height: 120, resizeMode: 'contain', marginTop: 80 }} />
-                        <View style={{ backgroundColor: 'white', borderRadius: 100, padding: 5, marginTop: 40, backgroundColor: 'white' }}>
+                        <Image source={Logo} style={{ height: 120, resizeMode: 'contain', marginTop: 60 }} />
+                        <View style={{ backgroundColor: 'white', borderRadius: 100, padding: 5, marginTop: 20, backgroundColor: 'white' }}>
                             <Image source={Success} style={{ height: 100, width: 100 }} />
                         </View>
                         <View style={{ alignItems: 'center', marginTop: 10 }}>
