@@ -96,7 +96,6 @@ class SignUp extends Component {
 		let model = {
 			email: email,
 			password: password,
-			verify: false,
 			fname: fname,
 			lname: lname
 		}

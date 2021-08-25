@@ -27,15 +27,21 @@ class SignIn extends Component {
 		this.state = this.initState;
 	}
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.route.params?.is_change) {
-			this.setState({success_message: 'Your password was updated with success, you can log in with it.'})
+		if (nextProps.route.params?.is_change) {
+			this.setState({ success_message: 'Your password was updated with success, you can log in with it.' })
 		}
 	}
-	componentDidMount() {
-		
-	}
-
+	componentDidUpdate() {
+		if(success_message) {
+			this.timer = setTimeout(() => {
+				this.setState({ success_message: "" });
+			}, 10000)
+		}
+	  }
 	componentWillUnmount() {
+		if (this.timer) {
+			clearTimeout(this.timer);      // ***
+		}
 	}
 	onLogin() {
 		let { email, password } = this.state;
